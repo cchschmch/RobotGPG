@@ -81,7 +81,7 @@ class Sensor_Motor:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_b:
                 self.switchdualmotors()
-            if event.key == pygame.K_PLUS:
+            if event.key == pygame.K_EQUALS:
                 self.UPMotorSpeed()
             if event.key == pygame.K_MINUS:
                 self.DOWNMotorSpeed()
