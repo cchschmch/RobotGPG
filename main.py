@@ -11,6 +11,7 @@ from Sensor_Encoder import *
 from DrawText import *
 from pygame.locals import *
 from Sensor_Led import *
+from Sensor_motor import *
 
 
 
@@ -25,18 +26,27 @@ class App:
         
         self.width  = width
         self.height = height
-        self.size = self.width, self.height      
+        
+        self.height_screen = 0
+        self.width_screen = 0
+        self.size = self.width, self.height
         self.fps = fps
         self.playtime = 0.0
         self.servo_util = Servo_Util()
-        self.sensor_camera = Sensor_Camera(width,height)
+        self.sensor_camera = Sensor_Camera(width/2,height/2)
         self.sensor_ultrasound = Sensor_UltraSound()
         self.sensor_encoder = Sensor_Encoder()
         self.sensor_led = Sensor_Led()
+        self.sensor_motor = Sensor_motor()
         self.drawtext = DrawText(width,height)
         
     def on_init(self):
         pygame.init()
+        infoObject = pygame.display.Info()
+        self.width_screen = infoObject.current_w
+        self.height_screen = infoObject.current_h
+
+        
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.background = pygame.Surface(self.screen.get_size()).convert()
@@ -47,6 +57,7 @@ class App:
         self.servo_util.on_init()
         self.sensor_encoder.on_init()
         self.sensor_led.on_init()
+        self.sensor_motor.on_init()
 
     def on_event_key(self,event):
     	if event.key == pygame.K_ESCAPE:
@@ -61,7 +72,7 @@ class App:
         self.servo_util.on_event(event)
         self.sensor_encoder.on_event(event)
         self.sensor_led.on_event(event)
-        
+        self.sensor_motor.on_event(event)
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
@@ -83,7 +94,8 @@ class App:
         self.sensor_ultrasound.on_loop()
         self.sensor_encoder.on_loop()
         self.sensor_led.on_loop()
-        
+        self.sensor_motor.on_loop()
+    
     def on_render(self):
         self.screen.blit(self.background, (0,0))
         self.sensor_camera.on_render( self.screen)
@@ -92,6 +104,7 @@ class App:
         self.servo_util.on_render(self.screen,self.drawtext)
         self.sensor_encoder.on_render(self.screen,self.drawtext)
         self.sensor_led.on_render(self.screen,self.drawtext)
+        self.sensor_motor.on_render(self.screen,self.drawtext)
         pygame.display.flip()
         
     def on_cleanup(self):
@@ -101,6 +114,7 @@ class App:
         self.drawtext.on_cleanup()
         self.sensor_encoder.on_cleanup()
         self.sensor_led.on_cleanup()
+        self.sensor_motor.on_cleanup()
         pygame.quit()
         
  
@@ -117,6 +131,8 @@ class App:
 
  
 if __name__ == "__main__" :
-    theApp = App(320,200,15)
+    
+    
+    theApp = App(640,400,15)
     theApp.on_execute()
 
