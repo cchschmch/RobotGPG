@@ -47,8 +47,14 @@ class App:
         self.servo_util.on_init()
         self.sensor_encoder.on_init()
         self.sensor_led.on_init()
-        
 
+    def on_event_key(self,event):
+    	if event.key == pygame.K_ESCAPE:
+            self._running = False
+
+    def on_event_mouse(self,down,event):
+        pass
+    
     def on_event(self, event):
         self.sensor_camera.on_event(event,self.screen)
         self.sensor_ultrasound.on_event(event)
@@ -59,9 +65,14 @@ class App:
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self._running = False
-                
+            self.on_event_key(event)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            self.on_event_mouse(True,event)
+        elif event.type == pygame.MOUSEBUTTONUP:
+            self.on_event_mouse(False,event)
+
+    
+
 
 
     def on_loop(self):
