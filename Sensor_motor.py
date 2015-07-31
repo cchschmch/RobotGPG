@@ -65,14 +65,14 @@ class Sensor_Motor:
         motor = ""
         speed =""
         if self.dualmotors:
-            motor = "dual "
+            motor = "Dual "
             speed = "{} ".format(self._motor_dual)
         else:
             if self.leftmotor:
-                motor = "left "
+                motor = "Left "
                 speed = "{} ".format(self._motor_left)
             if self.rightmotor:
-                motor = motor + "right"
+                motor = motor + "Right"
                 speed = speed + "{}".format(self._motor_right)
 
         drawtext.on_render(screen,"Motor {} at speed {}".format(motor,speed),'middle','right')
