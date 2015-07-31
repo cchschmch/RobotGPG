@@ -53,16 +53,16 @@ class Sensor_Motor:
     def DOWNMotorSpeed(self):
         if self.dualmotors:
             self._motor_dual = self._motor_dual -self._motor_step
-            if self._motor_dual<0
+            if self._motor_dual<0:
                 self._motor_dual = 0
         else:
             if self.leftmotor:
                 self._motor_left = self._motor_left-self._motor_step
-                if self._motor_left<0
+                if self._motor_left<0:
                     self._motor_left = 0
             if self.rightmotor:
                 self._motor_right = self._motor_right-self._motor_step
-                if self._motor_right<0
+                if self._motor_right<0:
                     self._motor_right = 0
     def on_loop(self):
         if self.dualmotors:
