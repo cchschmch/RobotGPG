@@ -87,7 +87,7 @@ class Sensor_Motor:
                 self.DOWNMotorSpeed()
             if event.key == pygame.K_v:
                 self.switchleftmotor()
-            if event.key == pygame.K_v:
+            if event.key == pygame.K_n:
                 self.switchrightmotor()
     
     def on_cleanup(self):
