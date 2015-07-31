@@ -43,7 +43,7 @@ class Sensor_Motor:
                 self._motor_right = self._motor_right+self._motor_step
 
 
-    def DOWBMotorSpeed(self):
+    def DOWNMotorSpeed(self):
         if self.dualmotors:
             self._motor_dual = self._motor_dual -self._motor_step
         else:
