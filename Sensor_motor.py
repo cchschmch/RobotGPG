@@ -15,25 +15,25 @@ class Sensor_Motor:
     def on_init(self):
         pass
         
-    def switchdualmotors()
+    def switchdualmotors():
         self.dualmotors = not self.dualmotors
         if self.dualmotors:
             self.leftmotor = False
             self.rightmotor = False
 
-    def switchleftmotor()
+    def switchleftmotor():
         self.leftmotor = not self.leftmotor
         if self.leftmotor:
             self.dualmotors = False
     
 
-    def switchrightmotor()
+    def switchrightmotor():
         self.rightmotor = not self.rightmotor
         if self.rightmotor:
             self.dualmotors = False
 
 
-    def UPMotorSpeed()
+    def UPMotorSpeed():
         if self.dualmotors:
             self._motor_dual = self._motor_dual +self._motor_step
         else:
@@ -43,7 +43,7 @@ class Sensor_Motor:
                 self._motor_right = self._motor_right+self._motor_step
 
 
-    def DOWBMotorSpeed()
+    def DOWBMotorSpeed():
         if self.dualmotors:
             self._motor_dual = self._motor_dual -self._motor_step
         else:
