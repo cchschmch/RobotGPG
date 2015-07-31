@@ -15,25 +15,25 @@ class Sensor_Motor:
     def on_init(self):
         pass
         
-    def switchdualmotors():
+    def switchdualmotors(self):
         self.dualmotors = not self.dualmotors
         if self.dualmotors:
             self.leftmotor = False
             self.rightmotor = False
 
-    def switchleftmotor():
+    def switchleftmotor(self):
         self.leftmotor = not self.leftmotor
         if self.leftmotor:
             self.dualmotors = False
     
 
-    def switchrightmotor():
+    def switchrightmotor(self):
         self.rightmotor = not self.rightmotor
         if self.rightmotor:
             self.dualmotors = False
 
 
-    def UPMotorSpeed():
+    def UPMotorSpeed(self):
         if self.dualmotors:
             self._motor_dual = self._motor_dual +self._motor_step
         else:
@@ -43,7 +43,7 @@ class Sensor_Motor:
                 self._motor_right = self._motor_right+self._motor_step
 
 
-    def DOWBMotorSpeed():
+    def DOWBMotorSpeed(self):
         if self.dualmotors:
             self._motor_dual = self._motor_dual -self._motor_step
         else:
@@ -75,7 +75,7 @@ class Sensor_Motor:
                 motor = motor + "Right"
                 speed = speed + "{}".format(self._motor_right)
 
-        drawtext.on_render(screen,"Motor {} at speed {}".format(motor,speed),'middle','right')
+        drawtext.on_render(screen,"Motor {} at speed {}".format(motor,speed),'middle','left')
     
     def on_event(self,event):
         if event.type == pygame.KEYDOWN:
