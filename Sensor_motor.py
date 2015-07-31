@@ -74,8 +74,8 @@ class Sensor_Motor:
             if self.rightmotor:
                 motor = motor + "Right"
                 speed = speed + "{}".format(self._motor_right)
-
-        drawtext.on_render(screen,"Motor {} at speed {}".format(motor,speed),'middle','left')
+        if motor != ""
+            drawtext.on_render(screen,"Motor {} at speed {}".format(motor,speed),'middle','left')
     
     def on_event(self,event):
         if event.type == pygame.KEYDOWN:
