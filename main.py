@@ -37,7 +37,7 @@ class App:
         self.sensor_ultrasound = Sensor_UltraSound()
         self.sensor_encoder = Sensor_Encoder()
         self.sensor_led = Sensor_Led()
-        self.sensor_motor = Sensor_motor()
+        self.sensor_motor = Sensor_Motor()
         self.drawtext = DrawText(width,height)
         
     def on_init(self):
