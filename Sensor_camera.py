@@ -9,7 +9,7 @@ class Sensor_Camera:
         self.width  = width
         self.height = height
         self.size = self.width, self.height
-        
+        print "Sensor_Camera :key C\n"
     def on_init(self):        
         pygame.camera.init()
         self.camera = pygame.camera.Camera("/dev/video0",(self.size))

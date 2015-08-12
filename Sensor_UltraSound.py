@@ -6,6 +6,7 @@ class Sensor_UltraSound:
     def __init__(self):
         self._usdist = False
         self.dist = 0
+        print "Sensor_UltraSound :key U\n"
     def on_init(self):        
        pass
     def on_start_stop_usdist(self):
@@ -19,7 +20,7 @@ class Sensor_UltraSound:
             drawtext.on_render(screen,"Dist : {} cm ".format(self.dist),'top','left')
     def on_event(self,event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_u:
                 self.on_start_stop_usdist()
             
     def on_cleanup(self):

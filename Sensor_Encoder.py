@@ -12,6 +12,7 @@ class Sensor_Encoder:
         self.target = 0
         self.do_encoder = False
         self.read_encoder = ''
+        print "Sensor_Encoder :key E\n"
     def on_init(self):        
        pass
     

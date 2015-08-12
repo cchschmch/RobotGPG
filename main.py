@@ -12,6 +12,7 @@ from DrawText import *
 from pygame.locals import *
 from Sensor_Led import *
 from Sensor_motor import *
+from Sensor_rocket import *
 
 
 
@@ -38,7 +39,9 @@ class App:
         self.sensor_encoder = Sensor_Encoder()
         self.sensor_led = Sensor_Led()
         self.sensor_motor = Sensor_Motor()
+        self.sensor_rocket = Sensor_Rocket()
         self.drawtext = DrawText(width,height)
+        print "Main :key esc\n"
         
     def on_init(self):
         pygame.init()
@@ -58,6 +61,7 @@ class App:
         self.sensor_encoder.on_init()
         self.sensor_led.on_init()
         self.sensor_motor.on_init()
+        self.sensor_rocket.on_init()
 
     def on_event_key(self,event):
     	if event.key == pygame.K_ESCAPE:
@@ -73,6 +77,7 @@ class App:
         self.sensor_encoder.on_event(event)
         self.sensor_led.on_event(event)
         self.sensor_motor.on_event(event)
+        self.sensor_rocket.on_event(event)
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
@@ -95,6 +100,7 @@ class App:
         self.sensor_encoder.on_loop()
         self.sensor_led.on_loop()
         self.sensor_motor.on_loop()
+        self.sensor_rocket.on_loop()
     
     def on_render(self):
         self.screen.blit(self.background, (0,0))
@@ -105,6 +111,8 @@ class App:
         self.sensor_encoder.on_render(self.screen,self.drawtext)
         self.sensor_led.on_render(self.screen,self.drawtext)
         self.sensor_motor.on_render(self.screen,self.drawtext)
+        self.sensor_rocket.on_render(self.screen,self.drawtext)
+        
         pygame.display.flip()
         
     def on_cleanup(self):
@@ -115,6 +123,7 @@ class App:
         self.sensor_encoder.on_cleanup()
         self.sensor_led.on_cleanup()
         self.sensor_motor.on_cleanup()
+        self.sensor_rocket.on_cleanup()
         pygame.quit()
         
  
@@ -133,6 +142,6 @@ class App:
 if __name__ == "__main__" :
     
     
-    theApp = App(640,400,15)
+    theApp = App(300,200,5)
     theApp.on_execute()
 

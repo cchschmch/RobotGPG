@@ -11,7 +11,7 @@ class Servo_Util:
         self.old_servo_pos = 90
         self.servo_pos = 90
         self.servo_step_angle = 10
-        
+        print "Servo_Util :key o <- -> up down space\n"
     def on_init(self):
         pass
     def on_start_stop_servo(self):
@@ -56,7 +56,7 @@ class Servo_Util:
                 
     def on_event(self,event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_o:
                self.on_start_stop_servo()
             elif event.key == pygame.K_LEFT:
                self.on_left_servo() 

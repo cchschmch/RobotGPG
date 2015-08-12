@@ -9,6 +9,7 @@ class Sensor_Led:
         self._led_right = False
         self.left = 1
         self.right = 0
+        print "Sensor_Led :key K L \n"
     def on_init(self):
         self.on_cleanup()
         

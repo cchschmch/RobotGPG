@@ -12,6 +12,7 @@ class Sensor_Motor:
         self.dualmotors = False
         self.leftmotor = False
         self.rightmotor = False
+        print "Sensor_Motor :key V B N = -  \n"
     def on_init(self):
         pass
     
