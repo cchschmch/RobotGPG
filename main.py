@@ -50,6 +50,7 @@ class App:
         disp_no = os.getenv("DISPLAY")
         if disp_no:
         	print "I'm running under X display = {0}".format(disp_no)
+        	found = True
         else:
 		# Check which frame buffer drivers are available
 		# Start with fbcon since directfb hangs with composite output
