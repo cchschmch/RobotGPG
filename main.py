@@ -20,6 +20,7 @@ from Sensor_rocket import *
 
 class App:
     def __init__(self, width=640, height=400, fps=30):
+ 
         self._running = True
 
 
@@ -44,14 +45,45 @@ class App:
         print "Main :key esc\n"
         
     def on_init(self):
-        pygame.init()
+	    # Based on "Python GUI in Linux frame buffer"
+        # http://www.karoltomala.com/blog/?p=679
+        disp_no = os.getenv("DISPLAY")
+        if disp_no:
+            print "I'm running under X display = {0}".format(disp_no)
+        else:
+			# Check which frame buffer drivers are available
+			# Start with fbcon since directfb hangs with composite output
+			drivers = ['fbcon', 'directfb', 'svgalib']
+			found = False
+			for driver in drivers:
+				# Make sure that SDL_VIDEODRIVER is set
+				if not os.getenv('SDL_VIDEODRIVER'):
+					os.putenv('SDL_VIDEODRIVER', driver)
+				try:
+					pygame.display.init()
+				except pygame.error:
+					print 'Driver: {0} failed.'.format(driver)
+					continue
+				found = True
+				break
+            if not found:
+				raise Exception('No suitable video driver found!')		
+	
+	        pygame.init()
         infoObject = pygame.display.Info()
         self.width_screen = infoObject.current_w
         self.height_screen = infoObject.current_h
-
         
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+		if disp_no:
+			self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+			print "X size: %d x %d" % (size[0], size[1])
+		else:
+			self.size = self.width_screen,self.height_screen
+			self.screen = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+			print "Framebuffer size: %d x %d" % (size[0], size[1])
+		
+		
         self.background = pygame.Surface(self.screen.get_size()).convert()
         self._running = True
         self.sensor_camera.on_init()
