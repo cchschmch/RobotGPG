@@ -78,11 +78,11 @@ class App:
         self.clock = pygame.time.Clock()
 	if disp_no:
 		self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
-		print "X size: %d x %d" % (size[0], size[1])
+		print "X size: %d x %d" % (self.size[0], self.size[1])
 	else:
 		self.size = self.width_screen,self.height_screen
 		self.screen = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
-		print "Framebuffer size: %d x %d" % (size[0], size[1])
+		print "Framebuffer size: %d x %d" % (self.size[0], self.size[1])
 	
         self.background = pygame.Surface(self.screen.get_size()).convert()
         self._running = True
