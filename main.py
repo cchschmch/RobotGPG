@@ -67,9 +67,9 @@ class App:
 				found = True
 				break
             if not found:
-				raise Exception('No suitable video driver found!')		
+		raise Exception('No suitable video driver found!')		
 	
-	        pygame.init()
+	pygame.init()
         infoObject = pygame.display.Info()
         self.width_screen = infoObject.current_w
         self.height_screen = infoObject.current_h
