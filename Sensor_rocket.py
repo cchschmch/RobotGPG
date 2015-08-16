@@ -10,14 +10,16 @@ class Sensor_Rocket:
         print "Sensor_Rocket :key R W A S D\n"
     def on_init(self):
         init_rocket()
-	pygame.key.set_repeat(10,10)
+	
     
     def switchrocket(self):
         self.rocket_pilot = not self.rocket_pilot
         if self.rocket_pilot:
             start_rocket()
+            pygame.key.set_repeat(10,10)
         else:
             stop_rocket()
+            pygame.key.set_repeat()
     def on_loop(self):
         pass
 
