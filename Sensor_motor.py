@@ -65,6 +65,15 @@ class Sensor_Motor:
                 self._motor_right = self._motor_right-self._motor_step
                 if self._motor_right<0:
                     self._motor_right = 0
+                    
+    def forward(self)
+        pass
+    def backward(self)
+        pass
+    def left(self)
+        pass
+    def right(self)
+        pass
     def on_loop(self):
         if self.dualmotors:
             set_speed(self._motor_dual)
@@ -102,7 +111,16 @@ class Sensor_Motor:
                 self.switchleftmotor()
             if event.key == pygame.K_n:
                 self.switchrightmotor()
-    
+            if event.key == pygame.K_i:
+                self.forward()
+            if event.key == pygame.K_m:
+                self.backward()
+            if event.key == pygame.K_j:
+                self.left()
+            if event.key == pygame.K_k:
+                self.right()
+            if event.key == pygame.K_1:
+                self.stop()
     def on_cleanup(self):
         self.dualmotors = False
         self.leftmotor = False
