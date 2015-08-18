@@ -79,7 +79,8 @@ def setup_usb():
     if DEVICE is None:
         DEVICE = usb.core.find(idVendor=0x0a81, idProduct=0x0701)
         if DEVICE is None:
-            raise ValueError('Missile device not found')
+            #raise ValueError('Missile device not found')
+            print "Rocket Not found"
         else:
             DEVICE_TYPE = "Original"
     else:
