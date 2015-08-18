@@ -66,14 +66,16 @@ class Sensor_Motor:
                 if self._motor_right<0:
                     self._motor_right = 0
                     
-    def forward(self)
-        pass
-    def backward(self)
-        pass
-    def left(self)
-        pass
-    def right(self)
-        pass
+    def forward(self):
+        fwd()
+    def backward(self):
+        bwd
+    def left(self):
+        left()
+    def right(self):
+        right()
+    def stop(self):
+        stop()
     def on_loop(self):
         if self.dualmotors:
             set_speed(self._motor_dual)
