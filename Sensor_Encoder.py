@@ -15,7 +15,7 @@ class Sensor_Encoder:
         print "Sensor_Encoder :key E\n"
     def on_init(self):
         print ("Voltage GoPiGo : %f \n",volt())
-       pass
+       
     
     def on_start_stop_encoder(self):
         self._encoder = not self._encoder
