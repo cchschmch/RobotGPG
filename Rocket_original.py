@@ -92,7 +92,8 @@ def setup_usb():
             DEVICE.detach_kernel_driver(0)
         except Exception, e:
             pass # already unregistered    
-    DEVICE.set_configuration()
+    if DEVICE is not None:
+    	DEVICE.set_configuration()
 
 #Send command to the office cannon
 def send_cmd(cmd):
