@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import gopigo
 from gopigo import *
+from Sensor_Led import *
 
 class Sensor_Motor:
     def __init__(self):
@@ -13,9 +14,18 @@ class Sensor_Motor:
         self.leftmotor = False
         self.rightmotor = False
         print "Sensor_Motor :key V B N = -  \n"
+ 	print "             i\n"
+	print "          j     k\n"
+        print"              m\n"
+        print "   1 : stop\n"
+	self.LedSensor=None
+
     def on_init(self):
         pass
-    
+
+    def SetLedSensor(self,LedSensor):
+	self.LedSensor=LedSensor
+	print "synchro Led with left roght motor\n"    
     def switchdualmotors(self):
         self.dualmotors = not self.dualmotors
         if self.dualmotors:
@@ -67,15 +77,31 @@ class Sensor_Motor:
                     self._motor_right = 0
                     
     def forward(self):
+	self.stop()
         fwd()
+        if self.LedSensor is not None:
+                self.LedSensor.on_start_led_left()
+		self.LedSensor.on_start_led_right()
+
     def backward(self):
-        bwd
+        self.stop()
+	bwd()
     def left(self):
-        left()
+	self.stop()
+        left_rot()
+	if self.LedSensor is not None:
+		self.LedSensor.on_start_led_left()
     def right(self):
-        right()
+	self.stop()
+        right_rot()
+        if self.LedSensor is not None:
+                self.LedSensor.on_start_led_right()
+
     def stop(self):
         stop()
+        if self.LedSensor is not None:
+                self.LedSensor.on_stop_leds()
+
     def on_loop(self):
         if self.dualmotors:
             set_speed(self._motor_dual)
