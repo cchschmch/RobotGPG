@@ -31,7 +31,6 @@ class App:
         
         self.height_screen = 0
         self.width_screen = 0
-        self.size = self.width, self.height
         self.fps = fps
         self.playtime = 0.0
         self.servo_util = Servo_Util()
@@ -40,6 +39,7 @@ class App:
         self.sensor_encoder = Sensor_Encoder()
         self.sensor_led = Sensor_Led()
         self.sensor_motor = Sensor_Motor()
+        self.sensor_motor.SetLedSensor(self.sensor_led)
         self.sensor_rocket = Sensor_Rocket()
         print "Main :key esc\n"
         
@@ -74,17 +74,17 @@ class App:
         self.width_screen = infoObject.current_w
         self.height_screen = infoObject.current_h
         
-        self.sensor_camera = Sensor_Camera(self.width_screen,self.height_screen)
-        self.drawtext = DrawText(self.width_screen,self.height_screen)
         self.clock = pygame.time.Clock()
 	if disp_no:
+	        self.size = self.width, self.height
 		self.screen = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
 		print "X size: %d x %d" % (self.size[0], self.size[1])
 	else:
 		self.size = self.width_screen,self.height_screen
 		self.screen = pygame.display.set_mode(self.size, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
 		print "Framebuffer size: %d x %d" % (self.size[0], self.size[1])
-	
+        self.sensor_camera = Sensor_Camera(self.width,self.height)
+        self.drawtext = DrawText(self.width,self.height)
         self.background = pygame.Surface(self.screen.get_size()).convert()
         self._running = True
         self.sensor_camera.on_init()
@@ -175,6 +175,6 @@ class App:
 if __name__ == "__main__" :
     
     
-    theApp = App(300,200,5)
+    theApp = App(600,480,30)
     theApp.on_execute()
 
