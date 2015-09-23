@@ -28,6 +28,16 @@ class App:
 		self.background = pygame.Surface(self.screen.get_size()).convert()
 		self._running = True
 		self.sample = GPG_Pos_Dist();
+		self.sample.release_element()
+		self.generate_sample(self.sample, 200)
+		self.scale = self.get_scale(self.sample)
+
+		io = GPG_Pos_Dist_IO()
+		io.ToFile(self.sample,'test')
+		self.sample.release_element()
+		io.FromFile(self.sample,'test')
+		self.scale = self.get_scale(self.sample)
+
 
 		self.offsetx = self.width/2
 		self.offsety = self.height/2
@@ -82,10 +92,7 @@ class App:
 	def on_loop(self):
 		self.miliseconds = self.clock.tick(self.fps)
 		self.playtime+=self.miliseconds / 1000.0
-		self.sample.release_element()
-		self.generate_sample(self.sample, self.playtime*50)
-		self.scale = self.get_scale(self.sample)
-	
+
 	def on_render(self):
 		self.screen.blit(self.background, (0,0)) 
 		num_element = self.sample.get_num_element()
