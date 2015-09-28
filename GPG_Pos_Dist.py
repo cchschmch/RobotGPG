@@ -28,6 +28,9 @@ class GPG_Pos_Dist_Element:
         self.x = xx
         self.y = yy
 
+    def get_pos(self):
+        return (self.x,self.y)
+
     def set_alpha(self, aa):
         self.alpha = aa*2*math.pi/360
 
@@ -52,10 +55,16 @@ class GPG_Pos_Dist_Element:
     def get_frame(self, scale,offsetx,offsety):
         points = []
         points.append((offsetx+scale*self.x,offsety+scale*self.y))
-        cosval = math.cos(self.alpha+self.beta)
-        sinval = math.sin(self.alpha+self.beta)
-        pointx = offsetx+scale*(self.x+self.usd*cosval)
-        pointy = offsety+scale*(self.y+self.usd*sinval)
+        cosvala = math.cos(self.alpha)
+        sinvala = math.sin(self.alpha)
+        pointx = offsetx+scale*(self.x+8*cosvala)
+        pointy = offsety+scale*(self.y+8*sinvala)
+        points.append((pointx,pointy))
+
+        cosvalb = math.cos(self.beta)
+        sinvalb = math.sin(self.beta)
+        pointx = offsetx+scale*(self.x+8*cosvala)+scale*(self.x+(self.usd+4)*cosvalb)
+        pointy = offsety+scale*(self.y+8*sinvala)+scale*(self.y+(self.usd+4)*sinvalb)
         points.append((pointx,pointy))
         return points
 
@@ -198,4 +207,46 @@ class GPG_Pos_Dist_IO:
             for element in gpg_pos_dist.Elements:
                 io.ToFile(f,element)
         f.closed
+
+class GPG_Map_Cell:
+    value = 0 # -1 / 0 / 1
+    num_cell_x = 0
+    num_cell_y = 0
+    def __init__(self,cell_x,cell_y):
+        self.num_cell_x = cell_x
+        self.num_cell_y = cell_y
+
+    def get_cell_num(self):
+        return (self.num_cell_x,self.num_cell_y)
+    def set_cell_value(self,val):
+        self.value = val
+    def get_cell_value(self):
+        return self.value
+
+class GPG_Map:
+    size_cell_x = 20
+    size_cell_y = 20
+    cells =[]
+
+    def CalculateCell(self,point):
+        cellx = (int(point.x) + size_cell_x/2)/size_cell_x
+        celly = (int(point.y) + size_cell_y/2)/size_cell_y
+        return (cellx,celly)
+
+
+
+    def AddToMap(self,elem):
+        points = element.get_frame(scale,offsetx,offsety)
+        pos_zero = element.get_pos()
+        last_cell = (None,None)
+        num_point = 0
+        for point in points:
+
+            cell = self.CalculateCell(point)
+            num_point = num_point+1
+
+
+
+
+
 
