@@ -1,5 +1,5 @@
 
-
+from geometry import *
 import math
 
 class GPG_Bbox:
@@ -135,9 +135,15 @@ class GPG_Pos_Dist:
         self.Elements = []
         self.numelem = 0
 
-    def get_num_element(self):
-        return self.numelem
 
+        
+    def get_element(self,num):
+        if num<self.numelem:
+            return self.Elements[num]
+        else:
+            return None
+    def get_num_element(self):
+        return self.numelem        
     def get_frame(self,scale,offsetx,offsety,num):
         if num<self.numelem:
             element = self.Elements[num]
@@ -212,9 +218,9 @@ class GPG_Map_Cell:
     value = 0 # -1 / 0 / 1
     num_cell_x = 0
     num_cell_y = 0
-    def __init__(self,cell_x,cell_y):
-        self.num_cell_x = cell_x
-        self.num_cell_y = cell_y
+    def __init__(self,cellGrid):
+        self.num_cell_x = cellGrid[0]
+        self.num_cell_y = cellGrid[1]
 
     def get_cell_num(self):
         return (self.num_cell_x,self.num_cell_y)
@@ -223,28 +229,130 @@ class GPG_Map_Cell:
     def get_cell_value(self):
         return self.value
 
+    def get_frame(self, scale,size_cell_x,size_cell_y,offsetx,offsety):
+        points = []
+        localoffsetx = -scale*size_cell_x/2
+        localoffsety = -scale*size_cell_y/2
+        points.append((localoffsetx+offsetx+scale*self.num_cell_x*size_cell_x,localoffsety+offsety+scale*self.num_cell_y*size_cell_y))
+        points.append((localoffsetx+offsetx+scale*(self.num_cell_x+1)*size_cell_x,localoffsety+offsety+scale*self.num_cell_y*size_cell_y))
+        points.append((localoffsetx+offsetx+scale*(self.num_cell_x+1)*size_cell_x,localoffsety+offsety+scale*(self.num_cell_y+1)*size_cell_y))
+        points.append((localoffsetx+offsetx+scale*self.num_cell_x*size_cell_x,localoffsety+offsety+scale*(self.num_cell_y+1)*size_cell_y))
+        points.append((localoffsetx+offsetx+scale*self.num_cell_x*size_cell_x,localoffsety+offsety+scale*self.num_cell_y*size_cell_y))
+        return points
+
+    def get_rect(self,size_cell_x,size_cell_y):
+        localoffsetx = -size_cell_x/2
+        localoffsety = -size_cell_y/2
+        r1 = Rect((localoffsetx+self.num_cell_x*size_cell_x,localoffsety+self.num_cell_y*size_cell_y), (size_cell_x , size_cell_x))
+        r1.normalize()
+        return r1
+
 class GPG_Map:
     size_cell_x = 20
     size_cell_y = 20
     cells =[]
+    numelem = 0
+    def __init__(self,cell_x,cell_y):
+        self.size_cell_x = cell_x
+        self.size_cell_y = cell_y
 
     def CalculateCell(self,point):
-        cellx = (int(point.x) + size_cell_x/2)/size_cell_x
-        celly = (int(point.y) + size_cell_y/2)/size_cell_y
+        cellx = (int(point[0]) + self.size_cell_x/2)/self.size_cell_x
+        celly = (int(point[1]) + self.size_cell_y/2)/self.size_cell_y
         return (cellx,celly)
 
+    def AddInterToMap(self,first_cell,last_cell,first_point, last_point):
+        cel_minx = min (first_cell.num_cell_x,last_cell.num_cell_x)
+        cel_miny = min (first_cell.num_cell_y,last_cell.num_cell_y)
+        cel_maxx = max (first_cell.num_cell_x,last_cell.num_cell_x)
+        cel_maxy = max (first_cell.num_cell_y,last_cell.num_cell_y)
+        for cell_x in range (cel_minx,cel_maxx):
+            for cell_y in range (cel_miny,cel_maxy):
+               found_intercell = False
+               for interCell in self.cells:
+                    if interCell is not first_cell:
+                        if interCell is not last_cell:
+                            if interCell.get_cell_value() == (cell_x,cell_y):
+                                found_intercell = True
+                                rect_points = interCell.get_frame(1,self.size_cell_x,self.size_cell_y,0,0)
+                                last_rect_point = None
+                                intersect_rect = False
+                                for first_rect_point in rect_points:
+                                    if last_rect_point is not None:
+                                        intersect_point = calculateIntersectPoint(first_point, last_point, first_rect_point, last_rect_point)
+                                        if intersect_point is not None:
+                                            if interCell.get_cell_value()<1:
+                                                interCell.set_cell_value(0)
+                                    last_rect_point = first_rect_point
+               if not found_intercell:
+                    interCell = GPG_Map_Cell((cell_x,cell_y))
+                    rect_points = interCell.get_frame(1,self.size_cell_x,self.size_cell_y,0,0)
+                    last_rect_point = None
+                    intersect_rect = False
+                    already_add = False
+                    for first_rect_point in rect_points:
+                        if not already_add:
+                            if last_rect_point is not None:
+                                intersect_point = calculateIntersectPoint(first_point, last_point, first_rect_point, last_rect_point)
+                                if intersect_point is not None:
+                                    already_add = True
+                                    self.cells.append(interCell)
+                                    interCell.set_cell_value(0)
+                        last_rect_point = first_rect_point
 
-
-    def AddToMap(self,elem):
-        points = element.get_frame(scale,offsetx,offsety)
-        pos_zero = element.get_pos()
-        last_cell = (None,None)
+    def AddToMap(self,elem,inter):
+        scale = 1
+        offsetx = 0
+        offsety = 0
+        points = elem.get_frame(scale,offsetx,offsety)
+        pos_zero = elem.get_pos()
+        last_cell = None
         num_point = 0
-        for point in points:
+        last_point = None
+        for first_point in points:
+            cellGrid = self.CalculateCell(first_point)
+            found = False
+            first_cell = None
+            for OneCell in self.cells:
+                if OneCell.get_cell_value() == cellGrid:
+                    found = True
+                    first_cell = OneCell
+                    if num_point<2:
+                        OneCell.set_cell_value(-1)
+                    else:
+                        OneCell.set_cell_value(1)
+            if not found:
+                OneCell = GPG_Map_Cell(cellGrid)
+                first_cell = OneCell
+                if num_point<2:
+                    OneCell.set_cell_value(-1)
+                else:
+                    OneCell.set_cell_value(1)
+                self.cells.append(OneCell)
+                self.numelem = self.numelem+1
+            if inter:
+                if last_cell is not None:
+                    if last_point is not None:
+                        self.AddInterToMap(first_cell,last_cell,first_point,last_point)
 
-            cell = self.CalculateCell(point)
             num_point = num_point+1
+            last_cell = first_cell
+            last_point = first_point
 
+    def get_num_element(self):
+        return self.numelem        
+        
+    def get_level(self,num):
+        if num<self.numelem:
+            element = self.cells[num]
+            return element.get_cell_value()
+        else:
+            return -1
+            
+    def get_frame(self,scale,offsetx,offsety,num):
+        if num<self.numelem:
+            element = self.cells[num]
+            return element.get_frame(scale,self.size_cell_x,self.size_cell_y,offsetx,offsety)
 
 
 
