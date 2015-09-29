@@ -6,9 +6,9 @@ from time import sleep
 
 class usd_sample:
     def acquire_usd(self):
-        sleep(0.05)
+        sleep(0.205)
         dist1 = gopigo.us_dist(15)
-        sleep(0.05)
+        sleep(0.205)
         dist2 = gopigo.us_dist(15)
         #dist = randint(1, 200)
         dist = (dist1+dist2)/2
@@ -29,9 +29,9 @@ if __name__ == "__main__":
 
     one_sample = GPG_Pos_Dist_Element()
     icurrenta = 0
-    istepb = 5
-    icurrentb = -15
-    while icurrentb<16:
+    istepb = 2
+    icurrentb = -30
+    while icurrentb<31:
         sample_acquire.rotate_usd(icurrentb)
         usd = sample_acquire.acquire_usd()
         one_sample.set_all(0,0,icurrenta,icurrentb,usd)
