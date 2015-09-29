@@ -297,6 +297,7 @@ class GPG_Map:
                                 if intersect_point is not None:
                                     already_add = True
                                     self.cells.append(interCell)
+                                    self.numelem = self.numelem+1
                                     interCell.set_cell_value(0)
                         last_rect_point = first_rect_point
 
@@ -338,7 +339,14 @@ class GPG_Map:
             num_point = num_point+1
             last_cell = first_cell
             last_point = first_point
-
+            
+    def AddAllToMap(self,gpg_Pos_Dist):
+        num_element = gpg_Pos_Dist.get_num_element()
+        num = 0
+        while num < num_element:
+            self.AddToMap(gpg_Pos_Dist.get_element(num),True)
+            num = num +1
+            
     def get_num_element(self):
         return self.numelem        
         
