@@ -38,7 +38,7 @@ class App:
         io.FromFile(self.sample,'sample')
         self.scale = self.get_scale(self.sample)
 
-        self.map = GPG_Map(10,10)
+        self.map = GPG_Map(20,20)
         self.map.AddAllToMap(self.sample)
         
         self.offsetx = self.width/2
@@ -62,15 +62,15 @@ class App:
     def get_scale(self,sample):
         scale = 1
         bbox = sample.get_bbox(scale)
-        scale = 2
+        scale = 1
         scalex = self.width/bbox.w
         scaley = self.height/bbox.h
         if scalex<scale:
             scale=scalex
         if scaley<scale:
             scale=scaley
-        scalex = self.width/bbox.h
-        scaley = self.height/bbox.w
+        scalex = self.width/2/bbox.h
+        scaley = self.height/2/bbox.w
         if scalex<scale:
             scale=scalex
         if scaley<scale:
