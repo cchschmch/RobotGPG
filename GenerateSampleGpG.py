@@ -17,7 +17,7 @@ class usd_sample:
 
     def rotate_usd(self,servo_pos):
         print "rotate ",servo_pos
-        gopigo.servo(servo_pos)
+        gopigo.servo(90+servo_pos)
 
 
 if __name__ == "__main__":
