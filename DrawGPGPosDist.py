@@ -29,16 +29,16 @@ class App:
         self._running = True
         self.sample = GPG_Pos_Dist();
         self.sample.release_element()
-        self.generate_sample(self.sample, 50)
-        self.scale = self.get_scale(self.sample)
+        #self.generate_sample(self.sample, 200)
+        #self.scale = self.get_scale(self.sample)
 
         io = GPG_Pos_Dist_IO()
-        io.ToFile(self.sample,'test')
+        #io.ToFile(self.sample,'test')
         self.sample.release_element()
-        io.FromFile(self.sample,'test')
+        io.FromFile(self.sample,'sample')
         self.scale = self.get_scale(self.sample)
 
-        self.map = GPG_Map(5,5)
+        self.map = GPG_Map(10,10)
         self.map.AddAllToMap(self.sample)
         
         self.offsetx = self.width/2
@@ -46,21 +46,23 @@ class App:
 
     def generate_sample(self,sample, usd):
         one_sample = GPG_Pos_Dist_Element()
-        istep = 5
-        icurrenta = 0
-
-        while icurrenta<4:
-            icurrentb = -90
-            while icurrentb<-85:
+        istepa = 45
+        istepb = 5
+        icurrenta = -90
+        istepusd = 00
+        while icurrenta<91:
+            icurrentb = -15
+            while icurrentb<16:
                 one_sample.set_all(0,0,icurrenta,icurrentb,usd)
                 sample.add_element(one_sample)
-                icurrentb = icurrentb+ istep
-            icurrenta = icurrenta + istep
+                usd = usd+istepusd
+                icurrentb = icurrentb+ istepb
+            icurrenta = icurrenta + istepa
 
     def get_scale(self,sample):
         scale = 1
         bbox = sample.get_bbox(scale)
-        scale = 4
+        scale = 2
         scalex = self.width/bbox.w
         scaley = self.height/bbox.h
         if scalex<scale:
