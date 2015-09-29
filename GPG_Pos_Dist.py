@@ -61,8 +61,8 @@ class GPG_Pos_Dist_Element:
         pointy = offsety+scale*(self.y+8*sinvala)
         points.append((pointx,pointy))
 
-        cosvalb = math.cos(self.beta)
-        sinvalb = math.sin(self.beta)
+        cosvalb = math.cos(self.alpha+self.beta)
+        sinvalb = math.sin(self.alpha+self.beta)
         pointx = offsetx+scale*(self.x+8*cosvala)+scale*(self.x+(self.usd+4)*cosvalb)
         pointy = offsety+scale*(self.y+8*sinvala)+scale*(self.y+(self.usd+4)*sinvalb)
         points.append((pointx,pointy))
@@ -228,6 +228,8 @@ class GPG_Map_Cell:
         self.value = val
     def get_cell_value(self):
         return self.value
+    def get_cell_pos(self):
+        return (self.num_cell_x,self.num_cell_y )
 
     def get_frame(self, scale,size_cell_x,size_cell_y,offsetx,offsety):
         points = []
@@ -266,14 +268,15 @@ class GPG_Map:
         cel_miny = min (first_cell.num_cell_y,last_cell.num_cell_y)
         cel_maxx = max (first_cell.num_cell_x,last_cell.num_cell_x)
         cel_maxy = max (first_cell.num_cell_y,last_cell.num_cell_y)
-        for cell_x in range (cel_minx,cel_maxx):
-            for cell_y in range (cel_miny,cel_maxy):
+        for cell_x in range (cel_minx,cel_maxx+1):
+            for cell_y in range (cel_miny,cel_maxy+1):
                found_intercell = False
                for interCell in self.cells:
-                    if interCell is not first_cell:
-                        if interCell is not last_cell:
-                            if interCell.get_cell_value() == (cell_x,cell_y):
-                                found_intercell = True
+                    if interCell.get_cell_pos() == (cell_x,cell_y):
+                        found_intercell = True
+                        if interCell is not first_cell:
+                            if interCell is not last_cell:
+
                                 rect_points = interCell.get_frame(1,self.size_cell_x,self.size_cell_y,0,0)
                                 last_rect_point = None
                                 intersect_rect = False
@@ -332,9 +335,10 @@ class GPG_Map:
                 self.cells.append(OneCell)
                 self.numelem = self.numelem+1
             if inter:
-                if last_cell is not None:
-                    if last_point is not None:
-                        self.AddInterToMap(first_cell,last_cell,first_point,last_point)
+                if num_point>=2:
+                    if last_cell is not None:
+                        if last_point is not None:
+                            self.AddInterToMap(first_cell,last_cell,first_point,last_point)
 
             num_point = num_point+1
             last_cell = first_cell
