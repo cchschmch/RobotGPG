@@ -10,7 +10,7 @@ class App:
     def __init__(self, width=640, height=400, fps=30):
         self._running = True
         self._display_surf = None
-        self.width	= width
+        self.width  = width
         self.height = height
         self.height_screen = 0
         self.width_screen = 0
@@ -38,7 +38,9 @@ class App:
         io.FromFile(self.sample,'test')
         self.scale = self.get_scale(self.sample)
 
-
+        self.map = GPG_Map(5,5)
+        self.map.AddAllToMap(self.sample)
+        
         self.offsetx = self.width/2
         self.offsety = self.height/2
 
@@ -49,7 +51,7 @@ class App:
 
         while icurrenta<4:
             icurrentb = -90
-            while icurrentb<91:
+            while icurrentb<-85:
                 one_sample.set_all(0,0,icurrenta,icurrentb,usd)
                 sample.add_element(one_sample)
                 icurrentb = icurrentb+ istep
@@ -58,6 +60,7 @@ class App:
     def get_scale(self,sample):
         scale = 1
         bbox = sample.get_bbox(scale)
+        scale = 4
         scalex = self.width/bbox.w
         scaley = self.height/bbox.h
         if scalex<scale:
@@ -102,11 +105,24 @@ class App:
         num_element = self.sample.get_num_element()
         num = 0
         while num < num_element:
-            num = num +1
             points = self.sample.get_frame(self.scale,self.offsetx,self.offsety,num)
             if points:
                 pygame.draw.lines(self.screen,(255,255,255),False,points,1)
-
+            num = num +1
+        num_element = self.map.get_num_element()
+        num = 0
+        while num < num_element:
+            color = self.map.get_level(num)
+            points = self.map.get_frame(self.scale,self.offsetx,self.offsety,num)
+            if points:
+                if color == 1:
+                    rgb = (255,0,0)
+                elif color == 0:
+                    rgb = (0,255,0)
+                else:
+                    rgb = (0,0,255)
+                pygame.draw.lines(self.screen,rgb,False,points,1)
+                num = num +1
         pygame.display.flip()
 
     def on_cleanup(self):
