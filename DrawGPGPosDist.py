@@ -1,4 +1,5 @@
 import pygame
+import sys
 from pygame.locals import *
 
 from GPG_Pos_Dist import*
@@ -7,6 +8,7 @@ import os
 import time
 
 class App:
+    filename = None
     def __init__(self, width=640, height=400, fps=30):
         self._running = True
         self._display_surf = None
@@ -28,14 +30,14 @@ class App:
         self.background = pygame.Surface(self.screen.get_size()).convert()
         self._running = True
         self.sample = GPG_Pos_Dist();
-        self.sample.release_element()
-        #self.generate_sample(self.sample, 200)
-        #self.scale = self.get_scale(self.sample)
 
-        io = GPG_Pos_Dist_IO()
-        #io.ToFile(self.sample,'test')
+
+        io = GPG_Pos_Dist_IO(self.sample.get_version())
+
         self.sample.release_element()
-        io.FromFile(self.sample,'sample')
+        info = None
+        if self.filename is not None:
+            io.FromFile(self.sample,self.filename,info)
         self.scale = self.get_scale(self.sample)
 
         self.map = GPG_Map(20,20)
@@ -44,20 +46,7 @@ class App:
         self.offsetx = self.width/2
         self.offsety = self.height/2
 
-    def generate_sample(self,sample, usd):
-        one_sample = GPG_Pos_Dist_Element()
-        istepa = 45
-        istepb = 5
-        icurrenta = -90
-        istepusd = 00
-        while icurrenta<91:
-            icurrentb = -15
-            while icurrentb<16:
-                one_sample.set_all(0,0,icurrenta,icurrentb,usd)
-                sample.add_element(one_sample)
-                usd = usd+istepusd
-                icurrentb = icurrentb+ istepb
-            icurrenta = icurrenta + istepa
+
 
     def get_scale(self,sample):
         scale = 1
@@ -144,5 +133,12 @@ class App:
 
  
 if __name__ == "__main__" :
+    if len(sys.argv) !=2:
+        print 'usage: DrawGPGPosDist.py <path_to_file_to_display> \n You must specify the path to the file you want to display as the first arg'
+        exit(1)
+
+
+
     theApp = App(600,480,30)
+    theApp.filename = sys.argv[1]
     theApp.on_execute()

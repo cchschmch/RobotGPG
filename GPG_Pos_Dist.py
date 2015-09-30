@@ -93,6 +93,10 @@ class GPG_Pos_Dist_Element:
         return bbox
 
 class GPG_Pos_Dist_Element_IO:
+    num_version=0
+    def __init__(self,num_version):
+        self.num_version=num_version
+
     def ToFile(self,f,gpg_Pos_Dist_Element):
         if f:
             s = str(gpg_Pos_Dist_Element.x)+'\n'
@@ -122,9 +126,11 @@ class GPG_Pos_Dist_Element_IO:
 class GPG_Pos_Dist:
     Elements = []
     numelem = 0
+    num_version = 0
     def __init__(self):
         pass
-
+    def get_version(self):
+        return self.num_version
     def add_element(self,elem_to_add):
         elem = GPG_Pos_Dist_Element()
         elem.set_copy(elem_to_add)
@@ -189,11 +195,18 @@ class GPG_Pos_Dist:
         return bbox
 
 class GPG_Pos_Dist_IO:
+    num_version = 0
+    def __init__(self,num_version):
+        self.num_version = num_version
 
-    def FromFile(self,gpg_pos_dist,workfile):
+    def FromFile(self,gpg_pos_dist,workfile,info):
         gpg_pos_dist.release_element()
         with open(workfile, 'r') as f:
-            io = GPG_Pos_Dist_Element_IO()
+
+            info = f.readline()
+            s = f.readline()
+            self.num_version = int(s)
+            io = GPG_Pos_Dist_Element_IO(self.num_version)
             s = f.readline()
             num_elem = int(s)
             num_read=0
@@ -204,9 +217,13 @@ class GPG_Pos_Dist_IO:
                 gpg_pos_dist.add_element(elem)
         f.closed
 
-    def ToFile(self,gpg_pos_dist,workfile):
+    def ToFile(self,gpg_pos_dist,workfile,info):
         with open(workfile, 'w') as f:
-            io = GPG_Pos_Dist_Element_IO()
+            s=info+'\n'
+            f.write(s)
+            s=str(self.num_version)+'\n'
+            f.write(s)
+            io = GPG_Pos_Dist_Element_IO(self.num_version)
             num_elem = gpg_pos_dist.get_num_element()
             s = str(num_elem)+'\n'
             f.write(s)
