@@ -3,6 +3,7 @@ import gopigo
 from GPG_Pos_Dist import*
 from random import randint
 from time import sleep
+from gopigo import *
 
 class usd_sample:
     num_version = 1
