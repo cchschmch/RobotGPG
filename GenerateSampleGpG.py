@@ -14,6 +14,7 @@ class usd_sample:
         sumdist = 0
         for test_num_sample in range(num_sample):
             dist = gopigo.us_dist(15)
+            test_num_sample.append(dist)
             if dist<self.lim and dist>=0:
                 sumdist=dist+sumdist
 	    else:
