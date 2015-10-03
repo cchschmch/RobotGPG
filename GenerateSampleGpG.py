@@ -10,15 +10,17 @@ class usd_sample:
     delay =0.2
     lim=250
     def acquire_usd(self,num_sample):
-        test_num_sample=[]
+        all_sample=[]
         sumdist = 0
         for test_num_sample in range(num_sample):
             dist = gopigo.us_dist(15)
-            test_num_sample.append(dist)
+
             if dist<self.lim and dist>=0:
                 sumdist=dist+sumdist
 	    else:
 		sumdist=self.lim+sumdist
+            all_sample.append(dist)
+            
 	dist = 	sumdist/num_sample
         print "acquire usd mean :",dist
         return test_num_sample
