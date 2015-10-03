@@ -14,16 +14,16 @@ class usd_sample:
         sumdist = 0
         for test_num_sample in range(num_sample):
             dist = gopigo.us_dist(15)
-
+            all_sample.append(dist)
             if dist<self.lim and dist>=0:
                 sumdist=dist+sumdist
-	    else:
-		sumdist=self.lim+sumdist
-            all_sample.append(dist)
-            
-	dist = 	sumdist/num_sample
-        print "acquire usd mean :",dist
-        return test_num_sample
+            else:
+                sumdist=self.lim+sumdist
+
+
+        dist = 	sumdist/num_sample
+        print "acquire usd mid :",dist
+        return all_sample
 
     def rotate_usd(self,servo_pos):
         print "rotate ",servo_pos
