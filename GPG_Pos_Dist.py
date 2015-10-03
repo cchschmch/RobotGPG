@@ -20,7 +20,8 @@ class GPG_Pos_Dist_Element:
     y=0
     alpha=0
     beta=0
-    usd=0
+    num_usd=0
+    usd=[]
     def __init__(self):
         pass
 
@@ -37,23 +38,47 @@ class GPG_Pos_Dist_Element:
     def set_beta(self, bb):
         self.beta = bb*2*math.pi/360
 
-    def set_usd(self,uu):
-        self.usd = uu
+    def add_usd(self,uu):
+        self.usd.append(uu)
+        self.num_usd=self.num_usd+1
 
-    def set_all(self, xx,yy,aa,bb,uu):
+    def get_num_usd(self):
+        return self.num_usd
+
+    def set_num_usd(self,num_usd):
+        self.num_usd = num_usd
+
+    def get_usd(self,num_usd):
+        return self.usd[num_usd]
+
+    def get_mid_usd(self):
+        mid = 0
+        for test_num_sample in range(self.num_usd):
+            mid = self.usd[test_num_sample]+mid
+        return mid/self.num_usd
+
+    def get_all_usd(self):
+        return self.usd
+    def set_all_usd(self,usd,num_usd):
+        self.usd=usd
+        self.num_usd = num_usd
+
+    def set_all(self, xx,yy,aa,bb):
         self.set_pos(xx,yy)
         self.set_alpha(aa)
         self.set_beta(bb)
-        self.set_usd(uu)
+
     def set_copy(self,elem_to_copy):
         self.x =elem_to_copy.x
         self.y = elem_to_copy.y
         self.alpha = elem_to_copy.alpha
         self.beta = elem_to_copy.beta
+        self.num_usd = elem_to_copy.num_usd
         self.usd = elem_to_copy.usd
 
     def get_frame(self, scale,offsetx,offsety):
         points = []
+        usd = self.get_mid_usd()
         points.append((offsetx+scale*self.x,offsety+scale*self.y))
         cosvala = math.cos(self.alpha)
         sinvala = math.sin(self.alpha)
@@ -63,8 +88,8 @@ class GPG_Pos_Dist_Element:
 
         cosvalb = math.cos(self.alpha+self.beta)
         sinvalb = math.sin(self.alpha+self.beta)
-        pointx = offsetx+scale*(self.x+8*cosvala)+scale*(self.x+(self.usd+4)*cosvalb)
-        pointy = offsety+scale*(self.y+8*sinvala)+scale*(self.y+(self.usd+4)*sinvalb)
+        pointx = offsetx+scale*(self.x+8*cosvala)+scale*(self.x+(usd+4)*cosvalb)
+        pointy = offsety+scale*(self.y+8*sinvala)+scale*(self.y+(usd+4)*sinvalb)
         points.append((pointx,pointy))
         return points
 
@@ -93,7 +118,7 @@ class GPG_Pos_Dist_Element:
         return bbox
 
 class GPG_Pos_Dist_Element_IO:
-    num_version=0
+    num_version=1
     def __init__(self,num_version):
         self.num_version=num_version
 
@@ -106,6 +131,8 @@ class GPG_Pos_Dist_Element_IO:
             s = str(gpg_Pos_Dist_Element.alpha)+'\n'
             f.write(s)
             s = str(gpg_Pos_Dist_Element.beta)+'\n'
+            f.write(s)
+            s = str(gpg_Pos_Dist_Element.get_num_usd())+'\n'
             f.write(s)
             s = str(gpg_Pos_Dist_Element.usd)+'\n'
             f.write(s)
@@ -121,12 +148,23 @@ class GPG_Pos_Dist_Element_IO:
             s=f.readline()
             gpg_Pos_Dist_Element.beta = float(s)
             s=f.readline()
-            gpg_Pos_Dist_Element.usd = float(s)
+            gpg_Pos_Dist_Element.set_num_usd(int(s))
+            s=f.readline()
+            b = "[]\n"
+            for i in range(0,len(b)):
+                s =s.replace(b[i],"")
+            s_split=s.split(',')
+            usd_list=[]
+            for one_usd in range(gpg_Pos_Dist_Element.get_num_usd()):
+                s_val=s_split[one_usd]
+                i_val = int(s_val)
+                usd_list.append(i_val)
+            gpg_Pos_Dist_Element.usd = usd_list
 
 class GPG_Pos_Dist:
     Elements = []
     numelem = 0
-    num_version = 0
+    num_version = 1
     def __init__(self):
         pass
     def get_version(self):
@@ -195,7 +233,7 @@ class GPG_Pos_Dist:
         return bbox
 
 class GPG_Pos_Dist_IO:
-    num_version = 0
+    num_version = 1
     def __init__(self,num_version):
         self.num_version = num_version
 
