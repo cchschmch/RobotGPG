@@ -40,7 +40,7 @@ if __name__ == "__main__":
     sample_acquire.rotate_usd(0)
     one_sample = GPG_Pos_Dist_Element()
     icurrenta = 0
-    istepb = 1
+    istepb = 5
     icurrentb = -85
     while icurrentb<86:
         sample_acquire.rotate_usd(icurrentb)
