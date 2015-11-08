@@ -13,6 +13,7 @@ from pygame.locals import *
 from Sensor_Led import *
 from Sensor_motor import *
 from Sensor_rocket import *
+from Sensor_Dof import *
 
 
 
@@ -40,7 +41,9 @@ class App:
         self.sensor_led = Sensor_Led()
         self.sensor_motor = Sensor_Motor()
         self.sensor_motor.SetLedSensor(self.sensor_led)
+        self.sensor_dof = Sensor_Dof()
         self.sensor_rocket = Sensor_Rocket()
+        
         print "Main :key esc\n"
         
     def on_init(self):
@@ -94,8 +97,10 @@ class App:
         self.sensor_encoder.on_init()
         self.sensor_led.on_init()
         self.sensor_motor.on_init()
+        self.sensor_dof.on_init()
         self.sensor_rocket.on_init()
-
+        
+        
     def on_event_key(self,event):
     	if event.key == pygame.K_ESCAPE:
             self._running = False
@@ -110,7 +115,9 @@ class App:
         self.sensor_encoder.on_event(event)
         self.sensor_led.on_event(event)
         self.sensor_motor.on_event(event)
+        self.sensor_dof.on_event(event)
         self.sensor_rocket.on_event(event)
+        
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
@@ -133,8 +140,10 @@ class App:
         self.sensor_encoder.on_loop()
         self.sensor_led.on_loop()
         self.sensor_motor.on_loop()
+        self.sensor_dof.on_loop()
         self.sensor_rocket.on_loop()
-    
+        
+        
     def on_render(self):
         self.screen.blit(self.background, (0,0))
         self.sensor_camera.on_render( self.screen)
@@ -144,6 +153,7 @@ class App:
         self.sensor_encoder.on_render(self.screen,self.drawtext)
         self.sensor_led.on_render(self.screen,self.drawtext)
         self.sensor_motor.on_render(self.screen,self.drawtext)
+        self.sensor_dof.on_render(self.screen,self.drawtext)
         self.sensor_rocket.on_render(self.screen,self.drawtext)
         
         pygame.display.flip()
@@ -157,6 +167,7 @@ class App:
         self.sensor_led.on_cleanup()
         self.sensor_motor.on_cleanup()
         self.sensor_rocket.on_cleanup()
+        self.sensor_dof.on_cleanup()
         pygame.quit()
         
  
