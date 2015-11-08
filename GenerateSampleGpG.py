@@ -1,9 +1,12 @@
 import sys
 import gopigo
+
+
 from GPG_Pos_Dist import*
 from random import randint
 from time import sleep
 from gopigo import *
+from Sensor_Dof import *
 
 class usd_sample:
     num_version = 1
@@ -26,16 +29,35 @@ class usd_sample:
         return all_sample
 
     def rotate_usd(self,servo_pos):
-        print "rotate ",servo_pos
+        print "rotate usd ",servo_pos
         gopigo.servo(90+servo_pos)
         sleep(self.delay)
-
+    def current_main(self):
+        
+        
+    def rotate_main(self,sensor_dof,relative_pos):
+        print "rotate main ",main_pos
+        initial_pos = sensor_dof.get_data()
+        current_pos = initial_pos
+        to_pos = (initial_pos+relative_pos)%360
+        stop()
+        if relative_pos>0:
+            right_rot()
+        else:
+            left_rot()
+            
+        
+        while (
+        
 
 if __name__ == "__main__":
     if len(sys.argv) !=2:
         print 'usage: GenerateSampleGpG.py <path_to_file_to_save> \n You must specify the path to the file you want to save as the first arg'
         sys.exit(1)
     filename = sys.argv[1]
+    sensor_dof = Sensor_Dof()
+    sensor_dof.on_init()
+    
     gopigo.enable_servo()
     print "enable_servo"
     sample_acquire = usd_sample()
