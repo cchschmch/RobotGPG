@@ -46,7 +46,7 @@ class main_usd_sample:
         to_pos = initial_pos+relative_pos
         if to_pos>180:
             to_pos = to_pos-360
-        if to_pos<-180
+        if to_pos<-180:
             to_pos=to_pos+360
 
         sensor_motor.stop()
