@@ -10,7 +10,7 @@ from time import sleep
 
 from gopigo import *
 from Sensor_Dof import *
-from Sensor_Motor import *
+from Sensor_motor import *
 
 
 
