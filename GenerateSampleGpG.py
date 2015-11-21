@@ -1,14 +1,20 @@
-import sys
+import sys, getopt
 import gopigo
-
+import RTIMU
+import os.path
+import math
 
 from GPG_Pos_Dist import*
 from random import randint
 from time import sleep
+
 from gopigo import *
 from Sensor_Dof import *
+from Sensor_Motor import *
 
-class usd_sample:
+
+
+class main_usd_sample:
     num_version = 1
     delay =0.2
     lim=250
@@ -35,19 +41,27 @@ class usd_sample:
     def current_main(self):
         
         
-    def rotate_main(self,sensor_dof,relative_pos):
-        print "rotate main ",main_pos
+    def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
         initial_pos = sensor_dof.get_data()
         current_pos = initial_pos
-        to_pos = (initial_pos+relative_pos)%360
-        stop()
+        to_pos = initial_pos+relative_pos
+        if to_pos>180:
+            to_pos = to_pos-360
+        if to_pos<-180
+            to_pos=to_pos+360
+
+        sensor_motor.stop()
+        test_pos = sensor_dof.get_data()
         if relative_pos>0:
-            right_rot()
+            sensor_motor.right()
         else:
-            left_rot()
-            
-        
-        while (
+            sensor_motor.left()
+        while (abs(test_pos-to_pos)>0.5):
+            test_pos = sensor_dof.get_data()
+        sensor_motor.stop()
+        test_pos = sensor_dof.get_data()
+        return test_pos
+
         
 
 if __name__ == "__main__":
@@ -57,13 +71,24 @@ if __name__ == "__main__":
     filename = sys.argv[1]
     sensor_dof = Sensor_Dof()
     sensor_dof.on_init()
-    
+
+    sensor_motor = Sensor_Motor()
+    sensor_motor.on_init()
+    sensor_motor.switchdualmotors()
+    sensor_motor.setMotorSpeed(90)
+    sensor_motor.on_loop()
+
     gopigo.enable_servo()
     print "enable_servo"
-    sample_acquire = usd_sample()
+    sample_acquire = main_usd_sample()
     sample = GPG_Pos_Dist()
     sample.release_element()
     sample_acquire.rotate_usd(0)
+    print "Current angle :",sensor_dof.get_data()
+    new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
+    print "New angle :",new_angle
+    exit(0);
+
     one_sample = GPG_Pos_Dist_Element()
     icurrenta = 0
     istepb = 5

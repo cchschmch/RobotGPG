@@ -43,7 +43,8 @@ class Sensor_Motor:
         if self.rightmotor:
             self.dualmotors = False
 
-
+    def setMotorSpeed(self,dual):
+        self._motor_dual =  dual
     def UPMotorSpeed(self):
         if self.dualmotors:
             self._motor_dual = self._motor_dual +self._motor_step

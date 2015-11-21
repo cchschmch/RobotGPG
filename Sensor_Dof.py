@@ -14,6 +14,7 @@ class Sensor_Dof:
         self._dof = False
         self._dof_init = False
         self.angle = 0
+        self.poll_interval = 1
         print "Sensor_Dof :key f\n"
         SETTINGS_FILE = "RTIMULib"
 
@@ -53,7 +54,7 @@ class Sensor_Dof:
             data = self.imu.getIMUData()
             fusionPose = data["fusionPose"]
             self.angle = math.degrees(fusionPose[2])
-            time.sleep(poll_interval*1.0/1000.0)
+            time.sleep(self.poll_interval*1.0/1000.0)
         return self.angle
     
     def on_loop(self):
