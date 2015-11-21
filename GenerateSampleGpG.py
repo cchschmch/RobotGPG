@@ -38,7 +38,6 @@ class main_usd_sample:
         print "rotate usd ",servo_pos
         gopigo.servo(90+servo_pos)
         sleep(self.delay)
-    def current_main(self):
         
         
     def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
