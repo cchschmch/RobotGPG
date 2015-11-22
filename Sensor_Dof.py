@@ -37,8 +37,8 @@ class Sensor_Dof:
         # this is a good time to set any fusion parameters
         if self._dof_init:
             self.imu.setSlerpPower(0.02)
-            self.imu.setGyroEnable(True)
-            self.imu.setAccelEnable(True)
+            self.imu.setGyroEnable(False)
+            self.imu.setAccelEnable(False)
             self.imu.setCompassEnable(True)
 
             self.poll_interval = self.imu.IMUGetPollInterval()
