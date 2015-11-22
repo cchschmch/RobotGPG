@@ -38,16 +38,17 @@ class main_usd_sample:
         print "rotate usd ",servo_pos
         gopigo.servo(90+servo_pos)
         sleep(self.delay)
-        
-        
-    def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
-        initial_pos = sensor_dof.get_data()
-        current_pos = initial_pos
-        to_pos = initial_pos+relative_pos
+    def compute_pos_modulo(self,to_pos):
         if to_pos>180:
             to_pos = to_pos-360
         if to_pos<-180:
             to_pos=to_pos+360
+        return to_pos
+    def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
+        initial_pos = sensor_dof.get_data()
+        current_pos = initial_pos
+        to_pos = initial_pos+relative_pos
+        self.compute_pos_modulo(to_pos)
 
         sensor_motor.stop()
         test_pos = sensor_dof.get_data()
@@ -55,8 +56,21 @@ class main_usd_sample:
             sensor_motor.right()
         else:
             sensor_motor.left()
-        while (abs(test_pos-to_pos)>0.5):
+        ok_turn = True
+        while (ok_turn):
+            sensor_motor.stop()
             test_pos = sensor_dof.get_data()
+            dist = to_pos-test_pos
+
+            if (abs(dist)<0.5):
+                ok_turn = False;
+            else:
+                ok_turn= True;
+                if dist>0:
+                    sensor_motor.right()
+                else:
+                    sensor_motor.left()
+
         sensor_motor.stop()
         test_pos = sensor_dof.get_data()
         return test_pos
