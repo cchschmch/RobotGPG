@@ -50,7 +50,6 @@ class Sensor_Dof:
             
     def get_data(self):
         if self.imu.IMURead():
-            print("dof get data  " )
             data = self.imu.getIMUData()
             fusionPose = data["fusionPose"]
             self.angle = math.degrees(fusionPose[2])
