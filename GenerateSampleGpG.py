@@ -53,6 +53,7 @@ class main_usd_sample:
 
         sensor_motor.stop()
         test_pos = sensor_dof.get_data()
+        print "test pos",test_pos," to_pos",to_pos
         if relative_pos>0:
             sensor_motor.right()
             sleep(0.1)
@@ -64,7 +65,7 @@ class main_usd_sample:
             sensor_motor.stop()
             test_pos = sensor_dof.get_data()
             dist = to_pos-test_pos
-
+            print "test pos",test_pos," to_pos",to_pos
             if (abs(dist)<0.5):
                 ok_turn = False;
             else:
