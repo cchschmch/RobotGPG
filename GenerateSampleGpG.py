@@ -52,6 +52,7 @@ class main_usd_sample:
         self.compute_pos_modulo(to_pos)
 
         sensor_motor.stop()
+        sleep(1)
         test_pos = sensor_dof.get_data()
         print "test pos",test_pos," to_pos",to_pos
         if relative_pos>0:
@@ -63,6 +64,7 @@ class main_usd_sample:
         ok_turn = True
         while (ok_turn):
             sensor_motor.stop()
+            sleep(1)
             test_pos = sensor_dof.get_data()
             dist = to_pos-test_pos
             print "test pos",test_pos," to_pos",to_pos
