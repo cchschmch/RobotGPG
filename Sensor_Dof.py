@@ -50,10 +50,12 @@ class Sensor_Dof:
             
     def get_data(self):
         if self.imu.IMURead():
-            data = self.imu.getIMUData()
-            fusionPose = data["fusionPose"]
-            self.angle = math.degrees(fusionPose[2])
-            time.sleep(self.poll_interval*1.0/1000.0)
+            test =0
+            while (test<20):
+                data = self.imu.getIMUData()
+                fusionPose = data["fusionPose"]
+                self.angle = math.degrees(fusionPose[2])
+                time.sleep(self.poll_interval*1.0/1000.0)
         return self.angle
     
     def on_loop(self):
