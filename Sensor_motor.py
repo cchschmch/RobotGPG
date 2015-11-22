@@ -13,19 +13,19 @@ class Sensor_Motor:
         self.dualmotors = False
         self.leftmotor = False
         self.rightmotor = False
-        print "Sensor_Motor :key V B N = -  \n"
- 	print "             i\n"
-	print "          j     k\n"
-        print"              m\n"
-        print "   1 : stop\n"
-	self.LedSensor=None
+        self.LedSensor=None
+
 
     def on_init(self):
-        pass
+        print "Sensor_Motor :key V B N = -  \n"
+        print "             i\n"
+        print "          j     k\n"
+        print"              m\n"
+        print "   1 : stop\n"
 
     def SetLedSensor(self,LedSensor):
-	self.LedSensor=LedSensor
-	print "synchro Led with left roght motor\n"    
+        self.LedSensor=LedSensor
+        print "synchro Led with left roght motor\n"
     def switchdualmotors(self):
         self.dualmotors = not self.dualmotors
         if self.dualmotors:

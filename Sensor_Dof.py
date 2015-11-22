@@ -1,6 +1,3 @@
-import pygame
-from pygame.locals import *
-
 import sys, getopt
 
 sys.path.append('.')
@@ -8,6 +5,9 @@ import RTIMU
 import os.path
 import time
 import math
+import pygame
+from pygame.locals import *
+
 
 class Sensor_Dof:
     def __init__(self):
