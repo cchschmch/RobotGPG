@@ -55,8 +55,10 @@ class main_usd_sample:
         test_pos = sensor_dof.get_data()
         if relative_pos>0:
             sensor_motor.right()
+            sleep(0.1)
         else:
             sensor_motor.left()
+            sleep(0.1)
         ok_turn = True
         while (ok_turn):
             sensor_motor.stop()
@@ -69,8 +71,10 @@ class main_usd_sample:
                 ok_turn= True;
                 if dist>0:
                     sensor_motor.right()
+                    sleep(0.1)
                 else:
                     sensor_motor.left()
+                    sleep(0.1)
 
         sensor_motor.stop()
         test_pos = sensor_dof.get_data()
