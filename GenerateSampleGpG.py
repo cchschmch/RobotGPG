@@ -44,6 +44,7 @@ class main_usd_sample:
         if to_pos<-180:
             to_pos=to_pos+360
         return to_pos
+
     def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
         initial_pos = sensor_dof.get_data()
         current_pos = initial_pos
@@ -78,10 +79,10 @@ class main_usd_sample:
         
 
 if __name__ == "__main__":
-    if len(sys.argv) !=2:
-        print 'usage: GenerateSampleGpG.py <path_to_file_to_save> \n You must specify the path to the file you want to save as the first arg'
-        sys.exit(1)
-    filename = sys.argv[1]
+    #if len(sys.argv) !=2:
+    #    print 'usage: GenerateSampleGpG.py <path_to_file_to_save> \n You must specify the path to the file you want to save as the first arg'
+    #    sys.exit(1)
+    #filename = sys.argv[1]
     sensor_dof = Sensor_Dof()
     sensor_dof.on_init()
 
