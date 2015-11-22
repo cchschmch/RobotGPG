@@ -16,14 +16,14 @@ class Sensor_Dof:
         self.angle = 0
         self.poll_interval = 1
         print "Sensor_Dof :key f\n"
-        SETTINGS_FILE = "RTIMULib"
+        self.SETTINGS_FILE = "RTIMULib"
 
-        print("Using settings file " + SETTINGS_FILE + ".ini")
-        if not os.path.exists(SETTINGS_FILE + ".ini"):
+        print("Using settings file " + self.SETTINGS_FILE + ".ini")
+        if not os.path.exists(self.SETTINGS_FILE + ".ini"):
             print("Settings file does not exist, will be created")
 
-        s = RTIMU.Settings(SETTINGS_FILE)
-        self.imu = RTIMU.RTIMU(s)
+        self.settings = RTIMU.Settings(self.SETTINGS_FILE)
+        self.imu = RTIMU.RTIMU(self.settings)
 
         print("IMU Name: " + self.imu.IMUName())
 
