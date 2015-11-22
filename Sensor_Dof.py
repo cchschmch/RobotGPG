@@ -56,6 +56,7 @@ class Sensor_Dof:
                 fusionPose = data["fusionPose"]
                 self.angle = math.degrees(fusionPose[2])
                 time.sleep(self.poll_interval*1.0/1000.0)
+                test = test+1
         return self.angle
     
     def on_loop(self):
