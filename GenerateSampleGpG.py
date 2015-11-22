@@ -84,7 +84,7 @@ if __name__ == "__main__":
     sample.release_element()
     sample_acquire.rotate_usd(0)
     print "Current angle :",sensor_dof.get_data()
-    new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
+    #new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
     print "New angle :",new_angle
     exit(0);
 
