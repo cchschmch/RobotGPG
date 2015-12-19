@@ -67,7 +67,7 @@ class main_usd_sample:
         ok_turn = True
         while (ok_turn):
             sensor_motor.stop()
-            #sleep(1)
+            sleep(0.5)
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
             num_test = num_test +1
