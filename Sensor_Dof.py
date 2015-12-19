@@ -42,6 +42,13 @@ class Sensor_Dof_Thread (threading.Thread):
             self.poll_interval = self.imu.IMUGetPollInterval()
             print("Recommended Poll Interval: %dmS\n" % self.poll_interval)
             threading.Thread.__init__(self)
+        self._stop = threading.Event()
+
+    def stop(self):
+        self._stop.set()
+
+    def stopped(self):
+        return self._stop.isSet()
 
     def get_data(self):
         if self.imu.IMURead():
@@ -82,3 +89,5 @@ class Sensor_Dof:
             
     def on_cleanup(self):
         self._dof = False
+        self._dof_init = False
+        self.sdt.stop()
