@@ -67,7 +67,7 @@ class main_usd_sample:
             sleep(1)
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
-            print "test pos",test_pos," to_pos",to_pos
+            print "test pos",test_pos," to_pos",to_pos, "dist",dist
             if (abs(dist)<0.5):
                 ok_turn = False;
             else:
