@@ -69,9 +69,7 @@ class Sensor_Dof:
 
     
     def on_loop(self):
-        if self._dof_init:
-            if self._dof:
-                self.get_data()
+        pass
                 
     def on_render(self,screen,drawtext):
         if self._dof_init:
