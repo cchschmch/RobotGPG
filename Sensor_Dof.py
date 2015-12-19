@@ -41,14 +41,14 @@ class Sensor_Dof_Thread (threading.Thread):
 
             self.poll_interval = self.imu.IMUGetPollInterval()
             print("Recommended Poll Interval: %dmS\n" % self.poll_interval)
-        if self.imu.IMURead():
             threading.Thread.__init__(self)
 
     def get_data(self):
-        data = self.imu.getIMUData()
-        fusionPose = data["fusionPose"]
-        self.sensor_dof.angle = math.degrees(fusionPose[2])
-        time.sleep(self.poll_interval*1.0/1000.0)
+        if self.imu.IMURead():
+            data = self.imu.getIMUData()
+            fusionPose = data["fusionPose"]
+            self.sensor_dof.angle = math.degrees(fusionPose[2])
+            time.sleep(self.poll_interval*1.0/1000.0)
     def run(self):
         while self.sensor_dof._dof_init:
             self.get_data()
