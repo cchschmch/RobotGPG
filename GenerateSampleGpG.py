@@ -50,16 +50,18 @@ class main_usd_sample:
         current_pos = initial_pos
         to_pos = initial_pos+relative_pos
         self.compute_pos_modulo(to_pos)
-
+        num_test = 0
         sensor_motor.stop()
         sleep(1)
         test_pos = sensor_dof.angle
         dist = to_pos-test_pos
-        print "test pos",test_pos," to_pos",to_pos, "dist",dist
+        print "test pos ",test_pos," to_pos ",to_pos, " dist ",dist, " test ",num_test
         if relative_pos>0:
+            print "Goto right"
             sensor_motor.right()
             sleep(0.1)
         else:
+            print "Goto left"
             sensor_motor.left()
             sleep(0.1)
         ok_turn = True
@@ -68,20 +70,24 @@ class main_usd_sample:
             sleep(1)
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
-            print "test pos",test_pos," to_pos",to_pos, "dist",dist
+            num_test = num_test +1
+            print "test pos",test_pos," to_pos",to_pos, "dist",dist, " test ",num_test
             if (abs(dist)<0.5):
                 ok_turn = False;
             else:
                 ok_turn= True;
                 if dist>0:
+                    print "Goto right"
                     sensor_motor.right()
                     sleep(0.1)
                 else:
+                    print "Goto left"
                     sensor_motor.left()
                     sleep(0.1)
 
         sensor_motor.stop()
         test_pos = sensor_dof.angle
+        print "Reach pos " , test_pos , " in ", num_test
         return test_pos
 
         
