@@ -54,7 +54,8 @@ class main_usd_sample:
         sensor_motor.stop()
         sleep(1)
         test_pos = sensor_dof.angle
-        print "test pos",test_pos," to_pos",to_pos
+        dist = to_pos-test_pos
+        print "test pos",test_pos," to_pos",to_pos, "dist",dist
         if relative_pos>0:
             sensor_motor.right()
             sleep(0.1)
@@ -106,7 +107,9 @@ if __name__ == "__main__":
     sample.release_element()
     sample_acquire.rotate_usd(0)
     print "Current angle :",sensor_dof.angle
-    new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
+    new_angle = 30
+    print "move ",new_angle
+    new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,new_angle);
     print "New angle :",new_angle
     sensor_dof.on_cleanup()
     exit(0);
