@@ -1,4 +1,5 @@
 import sys, getopt
+import threading
 
 sys.path.append('.')
 import RTIMU
@@ -9,15 +10,13 @@ import pygame
 from pygame.locals import *
 
 
-class Sensor_Dof:
-    def __init__(self):
-        self._dof = False
-        self._dof_init = False
-        self.angle = 0
+class Sensor_Dof_Thread (threading.Thread):
+    def __init__(self,sensor_dof):
+        sensor_dof.angle = 0
         self.poll_interval = 1
         print "Sensor_Dof :key f\n"
         self.SETTINGS_FILE = "RTIMULib"
-
+        self.sensor_dof = sensor_dof
         print("Using settings file " + self.SETTINGS_FILE + ".ini")
         if not os.path.exists(self.SETTINGS_FILE + ".ini"):
             print("Settings file does not exist, will be created")
@@ -28,14 +27,12 @@ class Sensor_Dof:
         print("IMU Name: " + self.imu.IMUName())
 
         if (not self.imu.IMUInit()):
-            print("IMU Init Failed")  
+            print("IMU Init Failed")
         else:
             print("IMU Init Succeeded")
-            self._dof_init = True
-        
-    def on_init(self):
-        # this is a good time to set any fusion parameters
-        if self._dof_init:
+            sensor_dof._dof_init = True
+          # this is a good time to set any fusion parameters
+        if sensor_dof._dof_init:
             self.imu.setSlerpPower(0.02)
             self.imu.setGyroEnable(False)
             self.imu.setAccelEnable(False)
@@ -43,21 +40,30 @@ class Sensor_Dof:
 
             self.poll_interval = self.imu.IMUGetPollInterval()
             print("Recommended Poll Interval: %dmS\n" % self.poll_interval)
+        if self.imu.IMURead():
+            threading.Thread.__init__(self)
+   def get_data(self):
+        data = self.imu.getIMUData()
+        fusionPose = data["fusionPose"]
+        self.sensor_dof.angle = math.degrees(fusionPose[2])
+        time.sleep(self.poll_interval*1.0/1000.0)
+   def run(self):
+        self.get_data()
+
+class Sensor_Dof:
+    def __init__(self):
+        self._dof = False
+        self._dof_init = False
+
+    def on_init(self):
+        self.sdt = Sensor_Dof_Thread(self)
+        self.sdt.start()
 
     def on_start_stop_dof(self):
         if self._dof_init:
             self._dof = not self._dof
             
-    def get_data(self):
-        if self.imu.IMURead():
-            test =0
-            while (test<20):
-                data = self.imu.getIMUData()
-                fusionPose = data["fusionPose"]
-                self.angle = math.degrees(fusionPose[2])
-                time.sleep(self.poll_interval*1.0/1000.0)
-                test = test+1
-        return self.angle
+
     
     def on_loop(self):
         if self._dof_init:
@@ -74,4 +80,5 @@ class Sensor_Dof:
                 self.on_start_stop_dof()
             
     def on_cleanup(self):
+        self.sdt.stop()
         self._dof = False
