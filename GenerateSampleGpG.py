@@ -108,6 +108,7 @@ if __name__ == "__main__":
     print "Current angle :",sensor_dof.angle
     new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
     print "New angle :",new_angle
+    sensor_dof.on_cleanup()
     exit(0);
 
     one_sample = GPG_Pos_Dist_Element()
