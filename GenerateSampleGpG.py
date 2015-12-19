@@ -46,14 +46,14 @@ class main_usd_sample:
         return to_pos
 
     def rotate_main(self,sensor_dof,sensor_motor,relative_pos):
-        initial_pos = sensor_dof.get_data()
+        initial_pos = sensor_dof.angle
         current_pos = initial_pos
         to_pos = initial_pos+relative_pos
         self.compute_pos_modulo(to_pos)
 
         sensor_motor.stop()
         sleep(1)
-        test_pos = sensor_dof.get_data()
+        test_pos = sensor_dof.angle
         print "test pos",test_pos," to_pos",to_pos
         if relative_pos>0:
             sensor_motor.right()
@@ -65,7 +65,7 @@ class main_usd_sample:
         while (ok_turn):
             sensor_motor.stop()
             sleep(1)
-            test_pos = sensor_dof.get_data()
+            test_pos = sensor_dof.angle
             dist = to_pos-test_pos
             print "test pos",test_pos," to_pos",to_pos
             if (abs(dist)<0.5):
@@ -80,7 +80,7 @@ class main_usd_sample:
                     sleep(0.1)
 
         sensor_motor.stop()
-        test_pos = sensor_dof.get_data()
+        test_pos = sensor_dof.angle
         return test_pos
 
         
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     sample = GPG_Pos_Dist()
     sample.release_element()
     sample_acquire.rotate_usd(0)
-    print "Current angle :",sensor_dof.get_data()
+    print "Current angle :",sensor_dof.angle
     new_angle = sample_acquire.rotate_main(sensor_dof,sensor_motor,30);
     print "New angle :",new_angle
     exit(0);
