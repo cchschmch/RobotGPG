@@ -38,6 +38,7 @@ class main_usd_sample:
         #print "rotate usd ",servo_pos
         gopigo.servo(90+servo_pos)
         sleep(self.delay)
+
     def compute_pos_modulo(self,to_pos):
         if to_pos>180:
             to_pos = to_pos-360
@@ -75,6 +76,7 @@ class main_usd_sample:
             sleep(wait_motor_stop)
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
+            self.compute_pos_modulo(dist)
             num_test = num_test +1
             print "test pos",test_pos," to_pos",to_pos, "dist",dist, " test ",num_test
             if (abs(dist)<0.5):
@@ -141,6 +143,7 @@ if __name__ == "__main__":
         sample_acquire.rotate_usd(0)
         sample_acquire.acquire_cone_usd(angle_main,one_sample)
         iangle_main = iangle_main+istep_main
+
 
 
     sample_acquire.rotate_usd(0)
