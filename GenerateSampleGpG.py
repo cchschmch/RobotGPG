@@ -53,7 +53,7 @@ class main_usd_sample:
         to_pos = self.compute_pos_modulo(to_pos)
         num_test = 0
         wait_motor_stop = 0.5
-        wait_motor = 0.75
+        wait_motor = 0.075
 
         sensor_motor.stop()
         sleep(wait_motor_stop)
@@ -98,12 +98,13 @@ class main_usd_sample:
         return test_pos
 
     def acquire_cone_usd(self,angle_main,one_sample,istep_usd,icone_usd,max_sample_usd ):
-        max_angle_usd = -85
+        min_angle_usd = -85
         angle_usd = -icone_usd/2
-        if angle_usd<max_angle_usd:
-            angle_usd = max_angle_usd
+        if angle_usd<min_angle_usd:
+            angle_usd = min_angle_usd
+        max_angle_usd = -angle_usd
         sample_acquire.rotate_usd(0)
-        while angle_usd<=-angle_usd:
+        while angle_usd<=max_angle_usd:
             print "usd rotate ",angle_usd
             sample_acquire.rotate_usd(angle_usd)
             usd = sample_acquire.acquire_usd(max_sample_usd)
