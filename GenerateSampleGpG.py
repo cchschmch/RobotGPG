@@ -140,7 +140,7 @@ if __name__ == "__main__":
     icone_usd = 60
     max_sample_usd = 2
     angle_main = sensor_dof.angle
-    sample_acquire.acquire_cone_usd(angle_main,one_sample)
+    sample_acquire.acquire_cone_usd(angle_main,one_sample,istep_usd,icone_usd,max_sample_usd)
     while iangle_main<360-istep_main:
         angle_main = sample_acquire.rotate_main(sensor_dof,sensor_motor,istep_main);
         sample_acquire.rotate_usd(0)
