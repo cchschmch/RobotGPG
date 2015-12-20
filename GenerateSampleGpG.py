@@ -50,7 +50,7 @@ class main_usd_sample:
         initial_pos = sensor_dof.angle
         current_pos = initial_pos
         to_pos = initial_pos+relative_pos
-        self.compute_pos_modulo(to_pos)
+        to_pos = self.compute_pos_modulo(to_pos)
         num_test = 0
         wait_motor_stop = 0.5
         wait_motor = 0.05
@@ -76,7 +76,7 @@ class main_usd_sample:
             sleep(wait_motor_stop)
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
-            self.compute_pos_modulo(dist)
+            dist = self.compute_pos_modulo(dist)
             num_test = num_test +1
             print "test pos",test_pos," to_pos",to_pos, "dist",dist, " test ",num_test
             if (abs(dist)<0.5):
