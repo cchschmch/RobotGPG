@@ -60,7 +60,7 @@ class main_usd_sample:
         dist = to_pos-test_pos
 
 
-        #print "test pos ",test_pos," to_pos ",to_pos, " dist ",dist, " test ",num_test
+        print "test pos ",test_pos," to_pos ",to_pos, " dist ",dist, " test ",num_test
         if relative_pos>0:
             #print "Goto right"
             sensor_motor.right()
@@ -76,7 +76,7 @@ class main_usd_sample:
             test_pos = sensor_dof.angle
             dist = to_pos-test_pos
             num_test = num_test +1
-            #print "test pos",test_pos," to_pos",to_pos, "dist",dist, " test ",num_test
+            print "test pos",test_pos," to_pos",to_pos, "dist",dist, " test ",num_test
             if (abs(dist)<0.5):
                 ok_turn = False;
             else:
@@ -92,7 +92,7 @@ class main_usd_sample:
 
         sensor_motor.stop()
         test_pos = sensor_dof.angle
-        #print "Reach pos " , test_pos , " in ", num_test
+        print "Reach pos " , test_pos , " in ", num_test
         return test_pos
 
     def acquire_cone_usd(self,angle_main,one_sample):
