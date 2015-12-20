@@ -97,15 +97,17 @@ class main_usd_sample:
         print "Reach pos " , test_pos , " in ", num_test
         return test_pos
 
-    def acquire_cone_usd(self,angle_main,one_sample):
-        istep_usd = 5
-        angle_usd = -85
+    def acquire_cone_usd(self,angle_main,one_sample,istep_usd,icone_usd,max_sample_usd ):
+        max_angle_usd = -85
+        angle_usd = -icone_usd/2
+        if angle_usd<max_angle_usd:
+            angle_usd = max_angle_usd
         sample_acquire.rotate_usd(0)
-        while angle_usd<86:
+        while angle_usd<-angle_usd:
             sample_acquire.rotate_usd(angle_usd)
-            usd = sample_acquire.acquire_usd(5)
+            usd = sample_acquire.acquire_usd(max_sample_usd)
             one_sample.set_all(0,0,angle_main,angle_usd)
-            one_sample.set_all_usd(usd,5)
+            one_sample.set_all_usd(usd,max_sample_usd)
             sample.add_element(one_sample)
             angle_usd = angle_usd+ istep_usd
 
@@ -134,6 +136,9 @@ if __name__ == "__main__":
     one_sample = GPG_Pos_Dist_Element()
     istep_main = 66
     iangle_main = 0
+    istep_usd = 10
+    icone_usd = 60
+    max_sample_usd = 2
     angle_main = sensor_dof.angle
     sample_acquire.acquire_cone_usd(angle_main,one_sample)
     while iangle_main<360-istep_main:
@@ -141,7 +146,7 @@ if __name__ == "__main__":
         sample_acquire.rotate_usd(0)
         sample_acquire.rotate_usd(0)
         sample_acquire.rotate_usd(0)
-        sample_acquire.acquire_cone_usd(angle_main,one_sample)
+        sample_acquire.acquire_cone_usd(angle_main,one_sample,istep_usd,icone_usd,max_sample_usd)
         iangle_main = iangle_main+istep_main
 
 
